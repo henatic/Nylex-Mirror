@@ -27,37 +27,40 @@ import time
 #     def getTime(self):
 #         return self.today
 
-def getTime():
-    return datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y")
+class LiveTime:
+    def __init__(self, root):
+        # Create a label for the window.
+        self.timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y"), font=("Helvetica", 30), fg="white", bg="black")
+        self.timeLabel.pack()
 
-def update():
-    timeLabel.config(text=getTime())
-    timeLabel.after(1000, update)
-
-root = Tk()
-
-# set the background colour of GUI window.
-root.configure(background='black')
- 
-# set the title of GUI window
-root.title("Nylex.Net Magic Mirror")
- 
-# set the configuration of GUI window.
-root.geometry("500x900")
-
-root.iconbitmap('favicon.png')
-
-# Create a label for the window.
-timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y"), font=("Helvetica", 30), fg="white", bg="black")
-timeLabel.pack()
-update()
-# heading = Label(root, text=str(datetime.now()))
-
-# heading.grid(row=0, column=1)
+    def update(self):
+        self.timeLabel.after(1000, self.update)
+        self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y"))
 
 
-# start the GUI
-root.mainloop()
+def main():
+    root = Tk()
 
-# if __name__ == "__main__":
-#     main()
+    # set the background colour of GUI window.
+    root.configure(background='black')
+    
+    # set the title of GUI window
+    root.title("Nylex.Net Magic Mirror")
+    
+    # set the configuration of GUI window.
+    root.geometry("500x900")
+
+    root.iconbitmap('favicon.png')
+
+
+    # heading = Label(root, text=str(datetime.now()))
+
+    # heading.grid(row=0, column=1)
+    timer = LiveTime(root)
+    timer.update()
+
+    # start the GUI
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
