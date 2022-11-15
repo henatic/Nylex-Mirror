@@ -1,31 +1,10 @@
 # import openpyxl and tkinter modules
-from openpyxl import *
+# from openpyxl import *
 from tkinter import *
 from datetime import *
 import threading
 import time
-
-# class TimeThread:
-#     def __init__(self):
-#         return datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y")
-#         # print("I want to run, baby!")
-#         # playTime = threading.Thread(target = TimeThread.updateTime, args=today)
-#         # playTime.start()
-
-
-#     def ampm():
-#         timeMilitary = time
-#         pass
-
-#     def updateTime():
-#         while(True):
-#             newtime = datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y")
-#             today = newtime
-#             print(today)
-#             time.sleep(1)
-
-#     def getTime(self):
-#         return self.today
+import requests
 
 class LiveTime:
     def __init__(self, root):
