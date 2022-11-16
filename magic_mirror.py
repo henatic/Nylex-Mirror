@@ -17,6 +17,8 @@ class LiveTime:
         self.timeLabel.after(1000, self.update)
         self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%Y"))
 
+class TeamData:
+    pass
 
 def main():
     root = Tk()
@@ -36,9 +38,9 @@ def main():
     timer.update()
 
     # Testing connectivity to MS Teams.
-    myTeamsMessage = pymsteams.connectorcard("<MICROSOFT_WEBHOOK_URL>")
-    myTeamsMessage.text("This text was sent using Python.")
-    myTeamsMessage.send()
+    # myTeamsMessage = pymsteams.connectorcard("<MICROSOFT_WEBHOOK_URL>")
+    # myTeamsMessage.text("This text was sent using Python.")
+    # myTeamsMessage.send()
 
     # start the GUI
     root.mainloop()
