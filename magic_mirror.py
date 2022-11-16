@@ -14,7 +14,7 @@ class LiveTime:
 
     def update(self):
         self.timeLabel.after(1000, self.update)
-        self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y"))
+        self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%Y"))
 
 
 def main():
