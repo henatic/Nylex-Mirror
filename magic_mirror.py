@@ -5,6 +5,7 @@ from datetime import *
 import threading
 import time
 import requests
+import pymsteams
 
 class LiveTime:
     def __init__(self, root):
@@ -31,12 +32,13 @@ def main():
 
     root.iconbitmap('favicon.png')
 
-
-    # heading = Label(root, text=str(datetime.now()))
-
-    # heading.grid(row=0, column=1)
     timer = LiveTime(root)
     timer.update()
+
+    # Testing connectivity to MS Teams.
+    myTeamsMessage = pymsteams.connectorcard("<MICROSOFT_WEBHOOK_URL>")
+    myTeamsMessage.text("This text was sent using Python.")
+    myTeamsMessage.send()
 
     # start the GUI
     root.mainloop()
