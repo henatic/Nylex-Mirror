@@ -3,11 +3,15 @@
 from tkinter import *
 from datetime import *
 from flask import *
+from flask_restful import *
 import threading
 import time
 import requests
 import pymsteams
 import json
+import jsonify
+
+app = Flask(__name__)
 
 class LiveTime:
     def __init__(self, root):
@@ -19,10 +23,21 @@ class LiveTime:
         self.timeLabel.after(1000, self.update)
         self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%Y"))
 
-class TeamData:
-    pass
+class TeamData():
+    
+    def __init__(self, root):
+        self.emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
+        self.emplLabel.pack()
+        threader = threading.Thread(target=app.run, daemon=True)
+        threader.start()
 
+    @app.route('/', methods=['POST'])
+    def response(self):
+        self.emplLabel.config(text=str(request.json))
+        return jsonify({'Status':'Posted'})
+    
 def main():
+   
     root = Tk()
 
     # set the background colour of GUI window.
@@ -39,9 +54,10 @@ def main():
     timer = LiveTime(root)
     timer.update()
 
+    TeamData(root)
     # Testing connectivity to MS Teams.
-    # myTeamsMessage = pymsteams.connectorcard("<MICROSOFT_WEBHOOK_URL>")
-    # myTeamsMessage.text("This text was sent using Python.")
+    # myTeamsMessage = pymsteams.connectorcard("<WEBHOOK_URL>")
+    # myTeamsMessage.text("Bob teh Python Script here.")
     # myTeamsMessage.send()
 
     # start the GUI
