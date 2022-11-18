@@ -26,19 +26,22 @@ class LiveTime:
 class TeamData():
     
     def __init__(self, root):
-        self.emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
-        self.emplLabel.pack()
+        # self.emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
+        emplLabel.pack()
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
 
+    def starter():
+        app.run()
+
     @app.route('/', methods=['POST'])
-    def response(self):
-        self.emplLabel.config(text=str(request.json))
-        return jsonify({'Status':'Posted'})
+    def response():
+        emplLabel.config(text=str(request.json))
+        return request.json
     
 def main():
    
-    root = Tk()
+   
 
     # set the background colour of GUI window.
     root.configure(background='black')
@@ -64,4 +67,6 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__":
+    root = Tk()
+    emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
     main()
