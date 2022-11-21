@@ -5,11 +5,11 @@ from datetime import *
 from flask import *
 from flask_restful import *
 import threading
-import time
-import requests
-import pymsteams
-import json
-import jsonify
+# import time
+# import requests
+# import pymsteams
+# import json
+# import jsonify
 
 app = Flask(__name__)
 
@@ -25,14 +25,14 @@ class LiveTime:
 
 class TeamData():
     
-    def __init__(self, root):
+    def __init__(self):
         # self.emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
         emplLabel.pack()
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
 
-    def starter():
-        app.run()
+    # def starter():
+    #     app.run(debug=)
 
     @app.route('/', methods=['POST'])
     def response():
@@ -52,12 +52,12 @@ def main():
     # set the configuration of GUI window.
     root.geometry("500x900")
 
-    root.iconbitmap('favicon.png')
+    root.iconbitmap('C:\\Users\\henry\\Documents\\Nylex-Mirror\\favicon.ico')
 
     timer = LiveTime(root)
     timer.update()
 
-    TeamData(root)
+    TeamData()
     # Testing connectivity to MS Teams.
     # myTeamsMessage = pymsteams.connectorcard("<WEBHOOK_URL>")
     # myTeamsMessage.text("Bob teh Python Script here.")
