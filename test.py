@@ -1,7 +1,7 @@
 import requests
 
-obj = 'Help me, I need a server :('
+obj = {"message": "Help me I need a server :("}
 
-myReq = requests.post('http://127.0.0.1:5000', json=obj)
+myReq = requests.post('http://10.10.99.152:5000', json=obj)
 
 print(myReq.text)
