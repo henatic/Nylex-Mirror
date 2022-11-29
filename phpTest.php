@@ -5,7 +5,7 @@ echo $data;
 
 $options = array(
 'http' => array(
-'header' => "",
+'header' => "Content-type: application/json\r\n",
 'method' => 'POST',
 'content' => http_build_query($data)
 )
