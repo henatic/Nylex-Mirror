@@ -5,17 +5,15 @@ const app = express();
 const jsonParser = bodyParser.json();
 
 app.post('/', jsonParser, (req, res) => {
-    console.log('Connection started!');
-    request.post('http://127.0.0.1:5000', {json: req.body.message},
+    console.log(req.body);
+    let userResponse = 'null response';
+    request.post('http://127.0.0.1:5000', {json: req.body},
     function (error, response, body) {
-        let userResponse;
         if(!error && response.statusCode == 200) {
             userResponse = body;
-            console.log(body)
         }
         else {
             userResponse = error;
-            console.log(error);
         }
     });
     res.send(JSON.stringify(userResponse));
