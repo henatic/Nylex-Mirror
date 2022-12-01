@@ -6,7 +6,7 @@ const jsonParser = bodyParser.json();
 
 app.post('/', jsonParser, (req, res) => {
     console.log(req.body);
-    let userResponse = 'null response';
+    let userResponse = req.body;
     request.post('http://127.0.0.1:5000', {json: req.body},
     function (error, response, body) {
         if(!error && response.statusCode == 200) {

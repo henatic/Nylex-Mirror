@@ -36,8 +36,9 @@ class TeamData():
 
     @app.route('/', methods=['POST'])
     def response():
-        emplLabel.config(text=str(request.json))
-        return request.json
+        print(request.get_data())
+        emplLabel.config(text=str(request.get_json(force=True)))
+        return json.dumps({"Success": TRUE})
     
 def main():
    

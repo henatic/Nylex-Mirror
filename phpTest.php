@@ -1,20 +1,36 @@
 <?php
-// Converts it into a PHP object
-$data = json_decode(file_get_contents('php://input'), true);
-echo $data;
+    // use Joomla\CMS\Factory;
 
-$options = array(
-'http' => array(
-'header' => "Content-type: application/json\r\n",
-'method' => 'POST',
-'content' => http_build_query($data)
-)
-);
-$context = stream_context_create($options);
-$result = file_get_contents('http://10.10.99.152:5000', true, $context);
-if ($result === FALSE) {
-    echo "Bad request: ". $data;
-}
+    // Converts it into a PHP object
 
-var_dump($result);
+    // if(strtoupper($_SERVER["REQUEST_METHOD"]) != 'POST') {
+    //     echo 'Method not supported.';
+    //     exit;
+    // }
+    // if($_SERVER["CONTENT_TYPE"] != 'application/json') {
+    //     echo 'Unsupported content-type.';
+    //     exit;
+    // }
+
+    $data = trim(file_get_contents('php://input'));
+    $decoded = json_decode($data, true);
+    echo http_build_query($decoded);
+    
+    $options = array(
+        'http' => array(
+          'method'  => 'POST',
+          'Accept' => '*/*',
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+          'content' => http_build_query($decoded)
+        )
+      );
+    echo 'My option is ' . $options['http']['content'];
+    $context = stream_context_create($options);
+    echo 'My context is ' . var_dump($context);
+    $result = file_get_contents('http://10.10.99.152:5000/', false, $context);
+    if ($result === FALSE) {
+        echo "Bad request: ". $data;
+    }
+
+    var_dump($result);
 ?>
