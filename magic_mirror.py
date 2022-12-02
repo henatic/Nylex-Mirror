@@ -8,7 +8,7 @@ import threading
 # import time
 # import requests
 # import pymsteams
-# import json
+import json
 # import jsonify
 
 app = Flask(__name__)
@@ -36,8 +36,10 @@ class TeamData():
 
     @app.route('/', methods=['POST'])
     def response():
-        print(request.get_data())
-        emplLabel.config(text=str(request.json))
+        data = json.dumps(request.json)
+        data = json.loads(data)
+        print(data["message"]["content"])
+        emplLabel.config(text=str(data["user"]["displayName"] + " " + data["Date"] + "\n" + data["message"]["content"]))
         return json.dumps({"Success": TRUE})
     
 def main():
