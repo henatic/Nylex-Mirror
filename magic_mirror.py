@@ -30,21 +30,22 @@ class TeamData():
         emplLabel.pack()
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
+        self.template()
 
-    # def starter():
-    #     app.run(debug=)
+    def template(self, name="Bob", mess='Foo'):
+        with app.app_context():
+            return render_template('index.html', title='Hey Sexy.', displayName=name, content=mess)
 
     @app.route('/', methods=['POST'])
     def response():
         data = json.dumps(request.json)
         data = json.loads(data)
         print(data["message"]["content"])
+        # render_template('index.html', title='Welcome', displayName=data["user"]["displayName"], content=data["message"]["content"])
         emplLabel.config(text=str(data["user"]["displayName"] + " " + data["Date"] + "\n" + data["message"]["content"]))
         return json.dumps({"Success": TRUE})
     
 def main():
-   
-   
 
     # set the background colour of GUI window.
     root.configure(background='black')
