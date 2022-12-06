@@ -5,45 +5,56 @@ from datetime import *
 from flask import *
 from flask_restful import *
 import threading
+import textwrap
+import re
+from collections import deque
+# from io import StringIO
+# from html.parser import StringIO
+import re
 # import time
 # import requests
-# import pymsteams
+import pymsteams
 import json
 # import jsonify
 
 app = Flask(__name__)
 
 class LiveTime:
-    def __init__(self, root):
+    def __init__(self):
         # Create a label for the window.
-        self.timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%y"), font=("Helvetica", 30), fg="white", bg="black")
-        self.timeLabel.pack()
+        timeLabel.pack()
 
     def update(self):
-        self.timeLabel.after(1000, self.update)
-        self.timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p\n%m/%d/%Y"))
+        timeLabel.after(1000, self.update)
+        timeLabel.config(text=datetime.now().strftime("%I:%M:%S %p %m/%d/%Y"))
 
 class TeamData():
     
     def __init__(self):
-        # self.emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
-        emplLabel.pack()
+        # self.user1 = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
-        self.template()
+        message.pack()
+        # self.template()
 
-    def template(self, name="Bob", mess='Foo'):
-        with app.app_context():
-            return render_template('index.html', title='Hey Sexy.', displayName=name, content=mess)
+    # def template(self, name="Bob", mess='Foo'):
+    #     with app.app_context():
+    #         return render_template('index.html', title='Hey Sexy.', displayName=name, content=mess)
 
     @app.route('/', methods=['POST'])
     def response():
-        data = json.dumps(request.json)
-        data = json.loads(data)
-        print(data["message"]["content"])
-        # render_template('index.html', title='Welcome', displayName=data["user"]["displayName"], content=data["message"]["content"])
-        emplLabel.config(text=str(data["user"]["displayName"] + " " + data["Date"] + "\n" + data["message"]["content"]))
-        return json.dumps({"Success": TRUE})
+        try:
+            data = json.dumps(request.json)
+            data = json.loads(data)
+            wrapper = textwrap.TextWrapper(width=50)
+            clean = re.compile('<.*?>')
+            myTime = datetime.strptime(data["Date"], '%Y-%m-%dT%H:%M:%S.%fZ')
+            message.config(text=str(wrapper.fill(data["user"]["displayName"] + " " + myTime.strftime("%I:%M:%S %p %m/%d/%Y") + "\n" + re.sub(clean, '', data["message"]["content"]) + message.cget("text"))))
+            # user1.config(text=str(wrapper.fill(text=data["user"]["displayName"] + " " + myTime.strftime("%I:%M:%S %p %m/%d/%Y") + "\n" + re.sub(clean, '', data["message"]["content"]))))
+            return json.dumps({"Success": TRUE})
+        except Exception as e:
+            myTeamsMessage.text("The Mirror reflected something ugly caused by the following error:\n" + str(e))
+            myTeamsMessage.send()
     
 def main():
 
@@ -58,19 +69,24 @@ def main():
 
     root.iconbitmap('C:\\Users\\henry\\Documents\\Nylex-Mirror\\favicon.ico')
 
-    timer = LiveTime(root)
+    timer = LiveTime()
     timer.update()
 
     TeamData()
+
     # Testing connectivity to MS Teams.
-    # myTeamsMessage = pymsteams.connectorcard("<WEBHOOK_URL>")
-    # myTeamsMessage.text("Bob teh Python Script here.")
-    # myTeamsMessage.send()
+    myTeamsMessage.text("I am now reflecting.")
+    myTeamsMessage.send()
 
     # start the GUI
     root.mainloop()
 
+    myTeamsMessage.text("Shattered.")
+    myTeamsMessage.send()
+
 if __name__ == "__main__":
     root = Tk()
-    emplLabel = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
+    timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p %m/%d/%y"), font=("Helvetica", 30), fg="white", bg="black")
+    message = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    myTeamsMessage = pymsteams.connectorcard("<WEBHOOK_URL>")
     main()
