@@ -141,7 +141,7 @@ def main():
     # start the GUI
     root.mainloop()
 
-    myTeamsMessage.text("Shattered into pieces.")
+    myTeamsMessage.text("Shattered.")
     myTeamsMessage.send()
 
 if __name__ == "__main__":
