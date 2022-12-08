@@ -14,8 +14,8 @@
 
     $data = trim(file_get_contents('php://input'));
     echo $data;
-    $decoded = json_decode($data, true);
-    echo http_build_query($decoded);
+    // $decoded = json_decode($data, true);
+    // echo http_build_query($decoded);
     
     $options = array(
         'http' => array(
@@ -35,34 +35,3 @@
 
     var_dump($result);
 ?>
-
-<?php
-    if(strtoupper($_SERVER["REQUEST_METHOD"]) != 'POST') {
-        echo 'Method not supported.';
-        exit;
-    }
-    if($_SERVER["CONTENT_TYPE"] != 'application/json') {
-        echo 'Unsupported content-type.';
-        exit;
-    }
-
-    $data = trim(file_get_contents('php://input'));
-    echo '<p id="json">' . $data . '</p>';
-?>
-<script language="javascript" type="text/javascript">
-  function makeRequest() {
-	let myJson = JSON.parse(JSON.stringify(document.getElementById('json').innerHTML));
-
-	const xhr = new XMLHttpRequest();
-    const url = "http://10.10.99.152:5000/";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-       	myJson = JSON.parse(xhr.responseText);
-        	document.getElementById('json').innerHTML = myJson;
-      }
-    }
-  }
-  window.addEventListener("load", makeRequest(), false);
-</script>
