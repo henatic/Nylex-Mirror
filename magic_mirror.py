@@ -5,11 +5,13 @@ from datetime import *
 from pytz import timezone
 from flask import *
 from flask_restful import *
+from PIL import Image, ImageTk
 import threading
 import textwrap
 import re
 from collections import deque
 import random
+import pyautogui
 # from io import StringIO
 # from html.parser import StringIO
 import re
@@ -36,23 +38,24 @@ class TeamData():
         # self.user1 = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
-        user1.pack()
-        message1.pack(pady=(0, 10))
-        user2.pack()
-        message2.pack(pady=(0, 10))
-        user3.pack()
-        message3.pack(pady=(0, 10))
-        user4.pack()
-        message4.pack(pady=(0, 10))
-        user5.pack()
-        message5.pack(pady=(0, 10))
-        user6.pack()
-        message6.pack(pady=(0, 10))
-        user7.pack()
-        message7.pack(pady=(0, 10))
-        user8.pack()
-        message8.pack(pady=(0, 10))
-        line.pack()
+        # user1.pack(anchor=W)
+        # message1.pack(pady=(0, 10), anchor=W)
+        # user2.pack(anchor=W)
+        # message2.pack(pady=(0, 10), anchor=W)
+        # user3.pack(anchor=W)
+        # message3.pack(pady=(0, 10), anchor=W)
+        # user4.pack(anchor=W)
+        # message4.pack(pady=(0, 10), anchor=W)
+        # user5.pack(anchor=W)
+        # message5.pack(pady=(0, 10), anchor=W)
+        # user6.pack(anchor=W)
+        # message6.pack(pady=(0, 10), anchor=W)
+        # user7.pack(anchor=W)
+        # message7.pack(pady=(0, 10), anchor=W)
+        # user8.pack(anchor=W)
+        # message8.pack(pady=(0, 10), anchor=W)
+        # line.pack(anchor=W)
+        # orderStatus.pack()
         # self.template()
 
     # def template(self, name="Bob", mess='Foo'):
@@ -64,7 +67,7 @@ class TeamData():
         try:
             data = json.dumps(request.json)
             data = json.loads(data)
-            wrapper = textwrap.TextWrapper(width=50)
+            wrapper = textwrap.TextWrapper(width=int(window.width / 2))
             clean = re.compile('<.*?>')
             myTime = datetime.strptime(data["Date"], '%Y-%m-%dT%H:%M:%S.%fZ')
             myTime = myTime.replace(tzinfo=timezone('UTC'))
@@ -89,35 +92,48 @@ class TeamData():
                 msgList.appendleft(re.sub(clean, '', data["message"]["content"]))
                 userColor = colorList.pop()
                 colorList.appendleft(userColor)
+                labelList.append(Label(root, text=userList[0] + " " + timeStamp[0], font=("Helvetica", 15), fg=colorList[0], bg="black"))
+                labelMsg.append(Label(root, text=msgList[0], font=("Helvetica", 15), fg="white", bg="black", width=int(window.width / 2)))
+                labelList[-1].pack(anchor=W)
+                labelMsg[-1].pack(anchor=E)
 
-            if len(userList) > 9:
-                userList.pop()
-                msgList.pop()
-                timeStamp.pop()
-            
-            user1.config(text=userList[0] + " " + timeStamp[0], fg=colorList[0])
-            message1.config(text=str(wrapper.fill(msgList[0])))
-            if len(msgList) >= 2:
-                user2.config(text=userList[1] + " " + timeStamp[1], fg=colorList[1])
-                message2.config(text=str(wrapper.fill(msgList[1])))
-            if len(msgList) >= 3:
-                user3.config(text=userList[2] + " " + timeStamp[2], fg=colorList[2])
-                message3.config(text=str(wrapper.fill(msgList[2])))
-            if len(msgList) >= 4:
-                user4.config(text=userList[3] + " " + timeStamp[3], fg=colorList[3])
-                message4.config(text=str(wrapper.fill(msgList[3])))
-            if len(msgList) >= 5:
-                user5.config(text=userList[4] + " " + timeStamp[4], fg=colorList[4])
-                message5.config(text=str(wrapper.fill(msgList[4])))
-            if len(msgList) >= 6:
-                user6.config(text=userList[5] + " " + timeStamp[5], fg=colorList[5])
-                message6.config(text=str(wrapper.fill(msgList[5])))
-            if len(msgList) >= 7:
-                user7.config(text=userList[6] + " " + timeStamp[6], fg=colorList[6])
-                message7.config(text=str(wrapper.fill(msgList[6])))
-            if len(msgList) >= 8:
-                user8.config(text=userList[7] + " " + timeStamp[7], fg=colorList[7])
-                message8.config(text=str(wrapper.fill(msgList[7])))
+            index = 0
+            colorIndex = 0
+            while index < len(labelList) and index < len(labelMsg):
+                if colorIndex >= len(colorList):
+                    colorIndex = 0
+                labelList[index].config(text=userList[index] + " " + timeStamp[index], fg=colorList[index], justify=LEFT)
+                labelMsg[index].config(text=str(wrapper.fill(msgList[index])), justify=LEFT)
+                index += 1
+                colorIndex += 1
+            # if len(userList) > 9:
+            #     userList.pop()
+            #     msgList.pop()
+            #     timeStamp.pop()
+
+            # user1.config(text=userList[0] + " " + timeStamp[0], fg=colorList[0], justify=LEFT)
+            # message1.config(text=str(wrapper.fill(msgList[0])), justify=LEFT)
+            # if len(msgList) >= 2:
+            #     user2.config(text=userList[1] + " " + timeStamp[1], fg=colorList[1], justify=LEFT)
+            #     message2.config(text=str(wrapper.fill(msgList[1])), justify=LEFT)
+            # if len(msgList) >= 3:
+            #     user3.config(text=userList[2] + " " + timeStamp[2], fg=colorList[2], justify=LEFT)
+            #     message3.config(text=str(wrapper.fill(msgList[2])), justify=LEFT)
+            # if len(msgList) >= 4:
+            #     user4.config(text=userList[3] + " " + timeStamp[3], fg=colorList[3], justify=LEFT)
+            #     message4.config(text=str(wrapper.fill(msgList[3])), justify=LEFT)
+            # if len(msgList) >= 5:
+            #     user5.config(text=userList[4] + " " + timeStamp[4], fg=colorList[4], justify=LEFT)
+            #     message5.config(text=str(wrapper.fill(msgList[4])), justify=LEFT)
+            # if len(msgList) >= 6:
+            #     user6.config(text=userList[5] + " " + timeStamp[5], fg=colorList[5], justify=LEFT)
+            #     message6.config(text=str(wrapper.fill(msgList[5])), justify=LEFT)
+            # if len(msgList) >= 7:
+            #     user7.config(text=userList[6] + " " + timeStamp[6], fg=colorList[6], justify=LEFT)
+            #     message7.config(text=str(wrapper.fill(msgList[6])), justify=LEFT)
+            # if len(msgList) >= 8:
+            #     user8.config(text=userList[7] + " " + timeStamp[7], fg=colorList[7], justify=LEFT)
+            #     message8.config(text=str(wrapper.fill(msgList[7])), justify=LEFT)
             # user1.config(text=str(wrapper.fill(text=data["user"]["displayName"] + " " + myTime.strftime("%I:%M:%S %p %m/%d/%Y") + "\n" + re.sub(clean, '', data["message"]["content"]))))
             return json.dumps({"Success": TRUE})
         except Exception as e:
@@ -133,7 +149,8 @@ def main():
     root.title("Nylex.Net Magic Mirror")
     
     # set the configuration of GUI window.
-    root.geometry("500x900")
+    # root.geometry(str(500) + "x" + str(900))
+    root.attributes('-fullscreen', True)
 
     root.iconbitmap('C:\\Users\\henry\\Documents\\Nylex-Mirror\\favicon.ico')
 
@@ -154,34 +171,40 @@ def main():
 
 if __name__ == "__main__":
     root = Tk()
-    timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p %m/%d/%y"), font=("Helvetica", 30), fg="white", bg="black")
+    timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p %m/%d/%y"), font=("Helvetica", 50), fg="white", bg="black")
 
     colorList = deque(['red', 'OrangeRed', 'yellow', 'Lime', 'DeepSkyBlue', 'magenta', 'BurlyWood', 'Turquoise'])
     random.shuffle(colorList)
 
-    user1 = Label(root, text='', font=("Helvetica", 15), fg=colorList[0], bg="black")
-    user2 = Label(root, text='', font=("Helvetica", 15), fg=colorList[1], bg="black")
-    user3 = Label(root, text='', font=("Helvetica", 15), fg=colorList[2], bg="black")
-    user4 = Label(root, text='', font=("Helvetica", 15), fg=colorList[3], bg="black")
-    user5 = Label(root, text='', font=("Helvetica", 15), fg=colorList[4], bg="black")
-    user6 = Label(root, text='', font=("Helvetica", 15), fg=colorList[5], bg="black")
-    user7 = Label(root, text='', font=("Helvetica", 15), fg=colorList[6], bg="black")
-    user8 = Label(root, text='', font=("Helvetica", 15), fg=colorList[7], bg="black")
+    window = pyautogui.size()
 
-    message1 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message2 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message3 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message4 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message5 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message6 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message7 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
-    message8 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # user1 = Label(root, text='', font=("Helvetica", 15), fg=colorList[0], bg="black")
+    # user2 = Label(root, text='', font=("Helvetica", 15), fg=colorList[1], bg="black")
+    # user3 = Label(root, text='', font=("Helvetica", 15), fg=colorList[2], bg="black")
+    # user4 = Label(root, text='', font=("Helvetica", 15), fg=colorList[3], bg="black")
+    # user5 = Label(root, text='', font=("Helvetica", 15), fg=colorList[4], bg="black")
+    # user6 = Label(root, text='', font=("Helvetica", 15), fg=colorList[5], bg="black")
+    # user7 = Label(root, text='', font=("Helvetica", 15), fg=colorList[6], bg="black")
+    # user8 = Label(root, text='', font=("Helvetica", 15), fg=colorList[7], bg="black")
 
-    line = Canvas(master=root, width=450, height=1, bg="white")
+    # message1 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message2 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message3 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message4 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message5 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message6 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message7 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+    # message8 = Label(root, text='', font=("Helvetica", 15), fg="white", bg="black")
+
+    # line = Canvas(master=root, width=window.width, height=1, bg="white")
+
+    # orderStatus = Label(root, text='<Shipping status goes here.>', font=("Helvetica", 15), fg="white", bg="black")
 
     userList = deque()
     msgList = deque()
     timeStamp = deque()
+    labelList = deque()
+    labelMsg = deque()
 
-    myTeamsMessage = pymsteams.connectorcard("WEBHOOK_URL")
+    myTeamsMessage = pymsteams.connectorcard("https://nylexnet.webhook.office.com/webhookb2/44d40371-f594-4635-b0f4-54d864f70239@acb14216-43ac-4962-b25b-189ff1152188/IncomingWebhook/1c0324112a1c4e9f88ca0d8d748bc20d/452c7170-efff-49e4-ad6d-f3026a67c734")
     main()
