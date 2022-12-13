@@ -206,5 +206,5 @@ if __name__ == "__main__":
     labelList = deque()
     labelMsg = deque()
 
-    myTeamsMessage = pymsteams.connectorcard("https://nylexnet.webhook.office.com/webhookb2/44d40371-f594-4635-b0f4-54d864f70239@acb14216-43ac-4962-b25b-189ff1152188/IncomingWebhook/1c0324112a1c4e9f88ca0d8d748bc20d/452c7170-efff-49e4-ad6d-f3026a67c734")
+    myTeamsMessage = pymsteams.connectorcard("WEBHOOK_URL")
     main()
