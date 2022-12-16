@@ -12,6 +12,7 @@ import re
 from collections import deque
 import random
 import pyautogui
+import PyQt6
 # from io import StringIO
 # from html.parser import StringIO
 import re
@@ -143,7 +144,7 @@ class TeamData():
 def main():
 
     # set the background colour of GUI window.
-    root.configure(background='black')
+    root.configure(background='black', cursor='none')
     
     # set the title of GUI window
     root.title("Nylex.Net Magic Mirror")
