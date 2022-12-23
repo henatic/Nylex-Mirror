@@ -1,11 +1,13 @@
 # import openpyxl and tkinter modules
 # # from openpyxl import *
+# from reader.__main__ import main
 from tkinter import *
 from datetime import *
 from pytz import timezone
 from flask import *
 from flask_restful import *
 from PIL import Image, ImageTk
+from waitress import serve
 import threading
 import textwrap
 import re
@@ -15,7 +17,6 @@ import pyautogui
 import PyQt6
 # from io import StringIO
 # from html.parser import StringIO
-import re
 # import time
 # import requests
 import pymsteams
@@ -37,6 +38,8 @@ class TeamData():
     
     def __init__(self):
         # self.user1 = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
+
+        
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
         # user1.pack(anchor=W)
@@ -171,6 +174,7 @@ def main():
     myTeamsMessage.send()
 
 if __name__ == "__main__":
+
     root = Tk()
     timeLabel = Label(root, text=datetime.now().strftime("%I:%M:%S %p %m/%d/%y"), font=("Helvetica", 50), fg="white", bg="black")
 
