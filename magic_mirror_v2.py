@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
         self.time = LiveTime()
         self.time.update()
 
-        self.setCentralWidget(button)
+        # self.setCentralWidget(button)
         self.show()
 
 if __name__ == "__main__":

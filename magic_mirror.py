@@ -9,6 +9,7 @@ from flask_restful import *
 from PIL import Image, ImageTk
 from waitress import serve
 import threading
+import uvicorn
 import textwrap
 import re
 from collections import deque
@@ -39,7 +40,6 @@ class TeamData():
     def __init__(self):
         # self.user1 = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
 
-        
         threader = threading.Thread(target=app.run, daemon=True)
         threader.start()
         # user1.pack(anchor=W)
