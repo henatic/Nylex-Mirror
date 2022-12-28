@@ -9,19 +9,22 @@ app.post('/', jsonParser, (req, res) => {
     console.log(req.body);
     let userResponse = req.body;
 
-//     find().then(devices =>{
+    find().then(devices =>{
 
-//         request.post('http://127.0.0.1:5000/', {json: req.body},
-//         function (error, response, body) {
-//             if(!error && response.statusCode == 200) {
-//                 userResponse = body;
-//             }
-//             else {
-//                 userResponse = error;
-//             }
-//         });
-//     res.send(JSON.stringify(userResponse));
-//     })
+        for(device of devices) {
+            console.log(device.ip);
+        }
+        request.post('http://localhost:5050/', {json: req.body},
+        function (error, response, body) {
+            if(!error && response.statusCode == 200) {
+                userResponse = body;
+            }
+            else {
+                userResponse = error;
+            }
+        });
+    res.send(JSON.stringify(userResponse));
+    })
 
 });
 

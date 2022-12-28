@@ -16,6 +16,7 @@ from collections import deque
 import random
 import pyautogui
 import PyQt6
+import socket
 # from io import StringIO
 # from html.parser import StringIO
 # import time
@@ -26,6 +27,8 @@ import json
 
 app = Flask(__name__)
 app.debug=False
+app.host="localhost"
+app.port=5000
 
 class LiveTime:
     def __init__(self):
@@ -41,7 +44,7 @@ class TeamData():
     def __init__(self):
         # self.user1 = Label(root, text='Placeholder for Teams messages.', font=("Helvetica", 15), fg="white", bg="black")
 
-        threader = threading.Thread(target=app.run, daemon=True)
+        threader = threading.Thread(target=self.starter, daemon=True)
         threader.start()
         # user1.pack(anchor=W)
         # message1.pack(pady=(0, 10), anchor=W)
@@ -63,9 +66,8 @@ class TeamData():
         # orderStatus.pack()
         # self.template()
 
-    # def template(self, name="Bob", mess='Foo'):
-    #     with app.app_context():
-    #         return render_template('index.html', title='Hey Sexy.', displayName=name, content=mess)
+    def starter(self):
+        app.run(host='10.10.99.152', port=5000)
 
     @app.route('/', methods=['POST'])
     def response():
