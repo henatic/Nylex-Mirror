@@ -25,9 +25,9 @@
           'content' => $data
         )
       );
-    echo 'My option is ' . $options['http']['content'];
+    // echo 'My option is ' . $options['http']['content'];
     $context = stream_context_create($options);
-    echo 'My context is ' . var_dump($context);
+    // echo 'My context is ' . var_dump($context);
     $result = file_get_contents('http://10.10.99.152:5000/', false, $context);
     if ($result === FALSE) {
         echo "Bad request: ". $data;

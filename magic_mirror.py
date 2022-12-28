@@ -25,6 +25,7 @@ import json
 # import jsonify
 
 app = Flask(__name__)
+app.debug=False
 
 class LiveTime:
     def __init__(self):

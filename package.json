@@ -1,0 +1,24 @@
+{
+  "name": "nylex-mirror",
+  "version": "1.0.0",
+  "description": "Building my version of MagicMirror² for Nylex.net using a Python GUI.",
+  "main": "mirrorServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henatic/Nylex-Mirror.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/henatic/Nylex-Mirror/issues"
+  },
+  "homepage": "https://github.com/henatic/Nylex-Mirror#readme",
+  "dependencies": {
+    "local-devices": "^4.0.0"
+  },
+  "devDependencies": {}
+}
