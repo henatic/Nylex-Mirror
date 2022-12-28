@@ -67,7 +67,7 @@ class TeamData():
         # self.template()
 
     def starter(self):
-        app.run(host='10.10.99.152', port=5000)
+        app.run(host='0.0.0.0', port=5000)
 
     @app.route('/', methods=['POST'])
     def response():

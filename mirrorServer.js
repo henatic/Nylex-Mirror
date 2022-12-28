@@ -11,10 +11,26 @@ app.post('/', jsonParser, (req, res) => {
 
     find().then(devices =>{
 
-        for(device of devices) {
-            console.log(device.ip);
+        for(let device of devices) {
+            request.post('http://'+ device.ip +':5000/', {json: req.body},
+            function (error, response, body) {
+                if(!error && response.statusCode == 200) {
+                    userResponse = body;
+                }
+                else {
+                    userResponse = error;
+                }
+            });
+            try{
+                res.send(JSON.stringify(userResponse));
+            }
+            catch(err) {
+                console.log("Could not send to " + device.ip + " with the following error:\n" + err);
+            }
         }
-        request.post('http://localhost:5050/', {json: req.body},
+        
+    })
+    request.post('http://0.0.0.0:5000/', {json: req.body},
         function (error, response, body) {
             if(!error && response.statusCode == 200) {
                 userResponse = body;
@@ -23,10 +39,13 @@ app.post('/', jsonParser, (req, res) => {
                 userResponse = error;
             }
         });
-    res.send(JSON.stringify(userResponse));
-    })
-
+        try{
+            res.send(JSON.stringify(userResponse));
+        }
+        catch(err) {
+            console.log("Could not send to localhost with the following error:\n" + err);
+        }
 });
 
-const port = Number(process.env.PORT) || 5000;
+const port = Number(process.env.PORT) || 5050;
 app.listen(port, () => console.log(`Listening to port ${port}...`));
